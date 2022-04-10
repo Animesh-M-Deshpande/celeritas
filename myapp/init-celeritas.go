@@ -22,5 +22,12 @@ func initApplication() *application {
 		log.Fatal(err)
 	}
 
-	return nil //temp
+	cel.AppName = "myapp"
+	cel.Debug = true
+
+	app := &application{
+		App: cel,
+	}
+
+	return app
 }
