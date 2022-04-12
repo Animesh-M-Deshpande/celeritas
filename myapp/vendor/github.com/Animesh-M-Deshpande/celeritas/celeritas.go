@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/Animesh-M-Deshpande/celeritas/render"
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
 )
@@ -23,6 +24,7 @@ type Celeritas struct {
 	RootPath string
 	Routes   *chi.Mux
 	config   config
+	Render   *render.Render
 }
 
 type config struct {
@@ -34,7 +36,7 @@ func (c *Celeritas) New(rootPath string) error {
 
 	pathConfig := initPaths{
 		rootPath:   rootPath,
-		folderName: []string{"handlers", "views", "migrations", "Temp", "Middlewares"},
+		folderName: []string{"handlers", "migrations", "views", "data", "public", "tmp", "logs", "middleware"},
 	}
 
 	err := c.Init(pathConfig)
@@ -71,6 +73,8 @@ func (c *Celeritas) New(rootPath string) error {
 		renderer: os.Getenv("RENDERER"),
 	}
 
+	c.Render = c.createRenderer(c)
+
 	return nil
 }
 
@@ -96,7 +100,7 @@ func (c *Celeritas) ListenAndServe() {
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%s", os.Getenv("PORT")),
 		ErrorLog:     c.ErrorLog,
-		Handler:      c.routes(),
+		Handler:      c.Routes,
 		IdleTimeout:  30 * time.Second,
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 600 * time.Second,
@@ -127,4 +131,14 @@ func (c *Celeritas) startLoggers() (*log.Logger, *log.Logger) {
 	errorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	return infoLog, errorLog
+}
+
+func (c *Celeritas) createRenderer(cel *Celeritas) *render.Render {
+	myRenderer := render.Render{
+		Renderer: cel.config.renderer,
+		RootPath: cel.RootPath,
+		Port:     cel.config.port,
+	}
+
+	return &myRenderer
 }

@@ -1,6 +1,7 @@
 # github.com/Animesh-M-Deshpande/celeritas v0.0.0-20220410210631-23673877bfbf => ../celeritas
 ## explicit; go 1.18
 github.com/Animesh-M-Deshpande/celeritas
+github.com/Animesh-M-Deshpande/celeritas/render
 # github.com/go-chi/chi/v5 v5.0.7
 ## explicit; go 1.14
 github.com/go-chi/chi/v5
