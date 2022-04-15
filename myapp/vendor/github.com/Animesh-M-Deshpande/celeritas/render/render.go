@@ -59,8 +59,8 @@ func (c *Render) JetPage(w http.ResponseWriter, r *http.Request, templateName st
 	if data != nil {
 		td = data.(*TemplateData)
 	}
-	fmt.Println("Jet page renderer, page is:", fmt.Sprintf("%s/views/%s.jet", c.RootPath, templateName))
-	t, err := c.JetViews.GetTemplate(fmt.Sprintf("%s/views/%s.jet", c.RootPath, templateName))
+	fmt.Println("Jet page renderer, page is:", fmt.Sprintf("%s.jet", templateName))
+	t, err := c.JetViews.GetTemplate(fmt.Sprintf("%s.jet", templateName))
 
 	if err != nil {
 		log.Println(err)
