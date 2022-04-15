@@ -8,17 +8,13 @@ import (
 )
 
 func (c *Celeritas) routes() http.Handler {
-	//chi router is being used in favour to standard router for go
-
 	mux := chi.NewRouter()
 	mux.Use(middleware.RequestID)
 	mux.Use(middleware.RealIP)
-
 	if c.Debug {
 		mux.Use(middleware.Logger)
 	}
-
-	mux.Use(middleware.Recoverer) //recover if the application panics
+	mux.Use(middleware.Recoverer)
 
 	return mux
 }

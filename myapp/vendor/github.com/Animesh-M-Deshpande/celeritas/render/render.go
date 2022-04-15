@@ -32,36 +32,31 @@ type TemplateData struct {
 }
 
 func (c *Render) Page(w http.ResponseWriter, r *http.Request, view string, variables, data interface{}) error {
-
 	switch strings.ToLower(c.Renderer) {
 	case "go":
-		c.GoPage(w, r, view, data)
+		return c.GoPage(w, r, view, data)
 	case "jet":
-		c.JetPage(w, r, view, variables, data)
+		return c.JetPage(w, r, view, variables, data)
 	}
-
 	return nil
 }
 
-//JetPage renders the template using the JetPage templating engine
+// JetPage renders a template using the Jet templating engine
 func (c *Render) JetPage(w http.ResponseWriter, r *http.Request, templateName string, variables, data interface{}) error {
-
 	var vars jet.VarMap
 
-	if variables == nil { // initializes if its nil
+	if variables == nil {
 		vars = make(jet.VarMap)
 	} else {
-		vars = variables.(jet.VarMap) // cast it to correct format
+		vars = variables.(jet.VarMap)
 	}
 
 	td := &TemplateData{}
-
 	if data != nil {
 		td = data.(*TemplateData)
 	}
-	fmt.Println("Jet page renderer, page is:", fmt.Sprintf("%s.jet", templateName))
-	t, err := c.JetViews.GetTemplate(fmt.Sprintf("%s.jet", templateName))
 
+	t, err := c.JetViews.GetTemplate(fmt.Sprintf("%s.jet", templateName))
 	if err != nil {
 		log.Println(err)
 		return err
@@ -71,27 +66,22 @@ func (c *Render) JetPage(w http.ResponseWriter, r *http.Request, templateName st
 		log.Println(err)
 		return err
 	}
-
 	return nil
 }
 
-//renders standard  Go template
+// GoPage renders a standard Go template
 func (c *Render) GoPage(w http.ResponseWriter, r *http.Request, view string, data interface{}) error {
-
 	tmpl, err := template.ParseFiles(fmt.Sprintf("%s/views/%s.page.tmpl", c.RootPath, view))
-
 	if err != nil {
 		return err
 	}
 
 	td := &TemplateData{}
-
 	if data != nil {
 		td = data.(*TemplateData)
 	}
 
 	err = tmpl.Execute(w, &td)
-
 	if err != nil {
 		return err
 	}

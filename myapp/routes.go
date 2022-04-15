@@ -7,12 +7,12 @@ import (
 )
 
 func (a *application) routes() *chi.Mux {
-	// middleware must come before the routes
+	// middleware must come before any routes
 
-	// routes should come here
+	// add routes here
 	a.App.Routes.Get("/", a.Handlers.Home)
 
-	//static routes
+	// static routes
 	fileServer := http.FileServer(http.Dir("./public"))
 	a.App.Routes.Handle("/public/*", http.StripPrefix("/public", fileServer))
 
