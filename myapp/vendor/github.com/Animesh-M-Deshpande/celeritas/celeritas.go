@@ -9,7 +9,9 @@ import (
 	"time"
 
 	"github.com/Animesh-M-Deshpande/celeritas/render"
+	"github.com/Animesh-M-Deshpande/celeritas/session"
 	"github.com/CloudyKit/jet/v6"
+	"github.com/alexedwards/scs/v2"
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
 )
@@ -27,13 +29,16 @@ type Celeritas struct {
 	RootPath string
 	Routes   *chi.Mux
 	Render   *render.Render
+	Session  *scs.SessionManager
 	JetViews *jet.Set
 	config   config
 }
 
 type config struct {
-	port     string
-	renderer string
+	port        string
+	renderer    string
+	cookie      cookieConfig
+	sessionType string
 }
 
 // New reads the .env file, creates our application config, populates the Celeritas type with settings
@@ -72,8 +77,26 @@ func (c *Celeritas) New(rootPath string) error {
 	c.config = config{
 		port:     os.Getenv("PORT"),
 		renderer: os.Getenv("RENDERER"),
+		cookie: cookieConfig{
+			name:     os.Getenv("COOKIE_NAME"),
+			persist:  os.Getenv("COOKIE_PERSIST"),
+			lifeTime: os.Getenv("COOKIE_LIFETIME"),
+			secure:   os.Getenv("COOKIE_SECURE"),
+			domain:   os.Getenv("COKKIE_DOMAIN"),
+		},
+		sessionType: os.Getenv("SESSION_TYPE"),
 	}
 
+	// create session
+	sess := session.Session{
+		CookieLifeTime: c.config.cookie.lifeTime,
+		CookiePersist:  c.config.cookie.persist,
+		CookieName:     c.config.cookie.name,
+		SessionType:    c.config.sessionType,
+		CookieDomain:   c.config.cookie.domain,
+	}
+
+	c.Session = sess.InitSession()
 	var views = jet.NewSet(
 		jet.NewOSFileSystemLoader(fmt.Sprintf("%s/views", rootPath)),
 		jet.InDevelopmentMode(),
