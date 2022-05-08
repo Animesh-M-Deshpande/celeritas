@@ -17,7 +17,7 @@ type User struct {
 	Active    int       `db:"user_active"`
 	Password  string    `db:"password"`
 	CreatedAt time.Time `db:"created_at"`
-	UpdatedAt time.Time `db:"updatedAt"`
+	UpdatedAt time.Time `db:"updated_at"`
 	Token     Token     `db:"-"`
 }
 
@@ -83,7 +83,7 @@ func (u *User) Get(id int) (*User, error) {
 	}
 	var token Token
 	collection = upper.Collection(token.Table())
-	res = collection.Find(up.Cond{"user_id=": theUser.ID, "expiry<=": time.Now()}).OrderBy("created_at desc")
+	res = collection.Find(up.Cond{"user_id =": theUser.ID, "expiry <": time.Now()}).OrderBy("created_at desc")
 	err = res.One(&token)
 
 	if err != nil {

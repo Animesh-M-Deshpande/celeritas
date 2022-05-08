@@ -15,20 +15,25 @@ var upper db2.Session
 
 type Models struct {
 	// any models inserted here are easily accesible thoughout teh entire applications
+	Users  User
+	Tokens Token
 }
 
 func New(databasePool *sql.DB) Models {
 
 	db = databasePool
 
-	if os.Getenv("DATABASE_TYPE") == "mysql" || os.Getenv("DATABASE_TYPE") == "mysql" {
+	if os.Getenv("DATABASE_TYPE") == "mysql" || os.Getenv("DATABASE_TYPE") == "mariadb" {
 		upper, _ = mysql.New(databasePool)
 	} else {
 		upper, _ = postgresql.New(databasePool)
 
 	}
 
-	return Models{}
+	return Models{
+		Users:  User{},
+		Tokens: Token{},
+	}
 }
 
 func getInsertID(i db2.ID) int {
