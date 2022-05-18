@@ -27,3 +27,8 @@ celeritas/vendor/modules.txt
 myapp/go.mod
 myapp/vendor/*
 myapp/.vscode/targets.log
+.vscode/*
+celeritas/.vscode/*
+
+myapp/.vscode/*
+.gitignore
