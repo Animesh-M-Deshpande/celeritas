@@ -32,3 +32,4 @@ celeritas/.vscode/*
 
 myapp/.vscode/*
 .gitignore
+myapp/celeritas
