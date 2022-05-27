@@ -6,7 +6,7 @@ import (
 )
 
 //go:embed templates
-var templateFS embed.FS
+var templateFS embed.FS // file system to the template folder above
 
 func copyFilefromTemplate(templatePath, targetFile string) error {
 	// TODO: check to ensure file does not already exist

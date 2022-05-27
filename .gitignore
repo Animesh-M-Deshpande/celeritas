@@ -33,3 +33,4 @@ celeritas/.vscode/*
 myapp/.vscode/*
 .gitignore
 myapp/celeritas
+myapp/migrations/*
