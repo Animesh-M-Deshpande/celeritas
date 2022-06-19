@@ -61,12 +61,12 @@ func getDSN() string {
 func showHelp() {
 	color.Yellow(`Available commands:
 
-	help           - show the help commands
-	version        - print application version
-	migrate		   - runs all up migrations that have not been previously
-	migrate down   - recereses the most recent migrations
-	migrate reset  - runs all down migrations in rever order, and then all up migrations
-	make migration - creates tow new up and down migrations in the migrations folder
+	help           			- show the help commands
+	version        			- print application version
+	migrate		   			- runs all up migrations that have not been previously
+	migrate down   			- recereses the most recent migrations
+	migrate reset  			- runs all down migrations in rever order, and then all up migrations
+	make migration <name>	 - creates to new up and down migrations in the migrations folder
 	
 	`)
 }

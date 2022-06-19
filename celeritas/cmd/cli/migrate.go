@@ -6,12 +6,12 @@ func doMigrate(arg2, arg3 string) error {
 
 	dsn := getDSN()
 
-	fmt.Printf("calling up migration, dsn=%s", dsn)
-	fmt.Println("")
+	//fmt.Printf("calling up migration, dsn=%s", dsn)
+	//fmt.Println("")
 
 	switch arg2 {
 	case "up":
-		fmt.Println("calling up migration")
+		fmt.Println("calling up migration, dsn:" + dsn)
 		err := cel.MigrateUp(dsn)
 		if err != nil {
 			return err
