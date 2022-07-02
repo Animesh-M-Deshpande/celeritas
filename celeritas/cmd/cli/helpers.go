@@ -68,6 +68,7 @@ func showHelp() {
 	migrate reset  			- runs all down migrations in rever order, and then all up migrations
 	make migration <name>	 - creates to new up and down migrations in the migrations folder
 	make auth				- Create and run migrations for authentication table and create models and middlewares
-	
+	make handler <name>		- Creates a stub handler in the handler directory
+	make models <name>		- creates a new model in the models directory
 	`)
 }
