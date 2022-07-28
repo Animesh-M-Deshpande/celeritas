@@ -3,6 +3,8 @@ package handlers
 import (
 	"context"
 	"net/http"
+
+	"github.com/Animesh-M-Deshpande/celeritas"
 )
 
 func (h *Handlers) render(w http.ResponseWriter, r *http.Request, tmpl string, variables, data interface{}) error {
@@ -36,4 +38,26 @@ func (h *Handlers) sessionDestroy(ctx context.Context) error {
 
 func (h *Handlers) randomString(n int) string {
 	return h.App.RandomString(n)
+}
+
+func (h *Handlers) Encrypt(text string) (string, error) {
+	enc := celeritas.Encryption{Key: []byte(h.App.EncryptionKey)}
+	encrypted, err := enc.Encrypt(text)
+
+	if err != nil {
+		return "", err
+	}
+
+	return encrypted, nil
+}
+
+func (h *Handlers) Decrypt(crypto string) (string, error) {
+	enc := celeritas.Encryption{Key: []byte(h.App.EncryptionKey)}
+	text, err := enc.Decrypt(crypto)
+
+	if err != nil {
+		return "", err
+	}
+
+	return text, nil
 }
